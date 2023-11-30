@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Dashboard_Entity {
+  id                  Int                  @id @default(autoincrement())
+  name                String
+  parentId            Int?                 @unique
+  parent              Dashboard_Entity?    @relation("ParentChild", fields: [parentId], references: [id])
+  children            Dashboard_Entity[]   @relation("ParentChild")
+  Dashboard_Group     Dashboard_Group?
+  Dashboard_AssetType Dashboard_AssetType?
+  Dashboard_Asset     Dashboard_Asset?
+  Dashboard_Type      Dashboard_Type?
+}
+
+model Dashboard_Profile {
+  id    Int              @id @default(autoincrement())
+  name  String
+  users Dashboard_User[]
+}
+
+model Dashboard_Group {
+  id       Int              @id @default(autoincrement())
+  name     String
+  entityId Int              @unique
+  entity   Dashboard_Entity @relation(fields: [entityId], references: [id])
+  users    Dashboard_User[]
+}
+
+model Dashboard_User {
+  id        Int                @id @default(autoincrement())
+  name      String
+  groupId   Int                @unique
+  group     Dashboard_Group?   @relation(fields: [groupId], references: [id])
+  profileId Int?               @unique
+  profile   Dashboard_Profile? @relation(fields: [profileId], references: [id])
+}
+
+model Dashboard_Locations {
+  id    Int              @id @default(autoincrement())
+  name  String
+  asset Dashboard_Asset?
+}
+
+model Dashboard_AssetType {
+  id       Int                   @id @default(autoincrement())
+  name     String
+  entityId Int                   @unique
+  entity   Dashboard_Entity      @relation(fields: [entityId], references: [id])
+  parentId Int?                  @unique
+  parent   Dashboard_AssetType?  @relation("ParentChild", fields: [parentId], references: [id])
+  children Dashboard_AssetType[] @relation("ParentChild")
+  asset    Dashboard_Asset?
+}
+
+model Dashboard_Type {
+  id       Int               @id @default(autoincrement())
+  name     String
+  entityId Int               @unique
+  entity   Dashboard_Entity  @relation(fields: [entityId], references: [id])
+  assets   Dashboard_Asset[]
+}
+
+model Dashboard_Model {
+  id     Int               @id @default(autoincrement())
+  name   String
+  assets Dashboard_Asset[]
+}
+
+model Dashboard_Asset {
+  id          Int                  @id @default(autoincrement())
+  name        String
+  entityId    Int                  @unique
+  entity      Dashboard_Entity     @relation(fields: [entityId], references: [id])
+  assetTypeId Int                  @unique
+  assetType   Dashboard_AssetType  @relation(fields: [assetTypeId], references: [id])
+  locationId  Int?                 @unique
+  location    Dashboard_Locations? @relation(fields: [locationId], references: [id])
+  modelId     Int?                 @unique
+  model       Dashboard_Model?     @relation(fields: [modelId], references: [id])
+  typeId      Int?                 @unique
+  type        Dashboard_Type?      @relation(fields: [typeId], references: [id])
+}
