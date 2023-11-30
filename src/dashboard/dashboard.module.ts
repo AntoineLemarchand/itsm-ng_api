@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DashboardController } from './dashboard.controller';
-import { AssetModule } from 'src/asset/asset.module';
+import { AssetModule } from '../asset/asset.module';
 
 @Module({
   imports: [AssetModule],
