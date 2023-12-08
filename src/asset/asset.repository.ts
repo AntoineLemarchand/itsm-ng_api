@@ -39,15 +39,15 @@ class AssetRepository {
       assetType: {
         name: {
           in: Object.keys(selection),
-        }
-      }
-    }
+        },
+      },
+    };
     for (const assetType in selection) {
       for (const col in selection[assetType]) {
         condition[col] = {
           name: {
             in: Object.keys(selection[assetType][col]),
-          }
+          },
         };
       }
     }

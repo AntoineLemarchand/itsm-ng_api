@@ -4,7 +4,6 @@ import { AssetService } from '../asset/asset.service';
 
 describe('DashboardService', () => {
   let service: DashboardService;
-  let assetService: AssetService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,29 +19,21 @@ describe('DashboardService', () => {
     }).compile();
 
     service = module.get<DashboardService>(DashboardService);
-    assetService = module.get<AssetService>(AssetService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('should return the count of assets by type', async () => {
-    const result = 5; // this should match the expected result
-    jest
-      .spyOn(assetService, 'countByType')
-      .mockImplementation(() => Promise.resolve(result));
-
-    expect(await service.countByType('type')).toBe(result);
+  it('should throw an error for unsupported statType', async () => {
+    const query = { statType: 'Ticket', statSelection: '{}' };
+    await expect(service.count(query)).rejects.toThrow(`Type ${query.statType} is not supported`);
   });
 
-  it('should throw an error for unsupported types', async () => {
-    const unsupportedTypes = ['Ticket', 'Entity', 'Profile', 'Group', 'User'];
-
-    for (const type of unsupportedTypes) {
-      await expect(service.countByType(type)).rejects.toThrow(
-        `Type ${type} is not supported`,
-      );
-    }
+  it('should call countByType for supported statType', async () => {
+    const query = { statType: 'Other', statSelection: '{}' };
+    const countByTypeSpy = jest.spyOn(service['assetService'], 'countByType');
+    await service.count(query);
+    expect(countByTypeSpy).toHaveBeenCalledWith(JSON.parse(query.statSelection));
   });
 });

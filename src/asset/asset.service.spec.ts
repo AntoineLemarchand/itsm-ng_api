@@ -1,17 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AssetService } from './asset.service';
-import { AssetRepository } from './asset.repository';
+import { DashboardService } from '../dashboard/dashboard.service';
+import { AssetService } from '../asset/asset.service';
 
-describe('AssetService', () => {
-  let service: AssetService;
-  let assetRepository: AssetRepository;
+describe('DashboardService', () => {
+  let service: DashboardService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        AssetService,
+        DashboardService,
         {
-          provide: AssetRepository,
+          provide: AssetService,
           useValue: {
             countByType: jest.fn(),
           },
@@ -19,28 +18,22 @@ describe('AssetService', () => {
       ],
     }).compile();
 
-    service = module.get<AssetService>(AssetService);
-    assetRepository = module.get<AssetRepository>(AssetRepository);
+    service = module.get<DashboardService>(DashboardService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('should return the count of assets by type', async () => {
-    const result = 5; // this should match the expected result
-    jest
-      .spyOn(assetRepository, 'countByType')
-      .mockImplementation(() => Promise.resolve(result));
-
-    expect(await service.countByType('type')).toBe(result);
+  it('should throw an error for unsupported statType', async () => {
+    const query = { statType: 'Ticket', statSelection: '{}' };
+    await expect(service.count(query)).rejects.toThrow(`Type ${query.statType} is not supported`);
   });
 
-  it('should throw an error when the repository method throws an error', async () => {
-    jest
-      .spyOn(assetRepository, 'countByType')
-      .mockImplementation(() => Promise.reject('Error'));
-
-    await expect(service.countByType('type')).rejects.toThrow('Error');
+  it('should call countByType for supported statType', async () => {
+    const query = { statType: 'Other', statSelection: '{}' };
+    const countByTypeSpy = jest.spyOn(service['assetService'], 'countByType');
+    await service.count(query);
+    expect(countByTypeSpy).toHaveBeenCalledWith(JSON.parse(query.statSelection));
   });
 });

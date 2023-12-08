@@ -2,7 +2,6 @@ import { Controller, Get, HttpException, Inject, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-
 class CountDto {
   readonly statType: string;
   readonly statSelection: object;
@@ -26,7 +25,7 @@ export class DashboardController {
       console.log(result);
       return result;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
       throw new HttpException(error.message, 400);
     }
   }

@@ -19,7 +19,9 @@ export class DashboardService {
       case 'User':
         throw new Error(`Type ${statType} is not supported`);
       default:
-        return await this.assetService.countByType(await JSON.parse(statSelection));
+        return await this.assetService.countByType(
+          await JSON.parse(statSelection),
+        );
     }
   }
 }
