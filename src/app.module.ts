@@ -5,8 +5,10 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { PrismaService } from './prisma/prisma.service';
-import { AssetService } from './asset/asset.service';
 import { AssetModule } from './asset/asset.module';
+import { EntityModule } from './entity/entity.module';
+import { GroupModule } from './group/group.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -14,7 +16,10 @@ import { AssetModule } from './asset/asset.module';
       rootPath: join(__dirname, '..', 'public'),
     }),
     DashboardModule,
-    AssetModule
+    AssetModule,
+    EntityModule,
+    GroupModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

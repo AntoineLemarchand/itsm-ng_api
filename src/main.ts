@@ -13,6 +13,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {
     customfavIcon: '/favicon.ico',
+    customCss:
+      '.swagger-ui .topbar-wrapper { content:url(/logo.png); height: 3rem }',
   });
 
   await app.listen(3000);

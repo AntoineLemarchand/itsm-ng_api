@@ -1,14 +1,19 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 class AssetRepository {
-  constructor(
-    @Inject(PrismaService) private prisma: PrismaService,
-  ) {}
+  constructor(@Inject(PrismaService) private prisma: PrismaService) {}
 
-  async getById(id: number) {
+  async findAll() {
+    return await this.prisma.dashboard_AssetType.findMany({
+      include: {
+        assets: true,
+      },
+    });
+  }
+
+  async findById(id: number) {
     return await this.prisma.dashboard_AssetType.findUnique({
       where: {
         id: id,
@@ -24,10 +29,14 @@ class AssetRepository {
     });
   }
 
+  async count() {
+    return await this.prisma.dashboard_AssetType.count();
+  }
+
   async countByType(type: string) {
-    const assetType = await this.getByName(type)
+    const assetType = await this.getByName(type);
     if (!assetType) {
-      return 0;
+      throw new Error(`Asset type ${type} does not exist`);
     }
     return await this.prisma.dashboard_Asset.count({
       where: {

@@ -6,4 +6,4 @@ import { AssetModule } from '../asset/asset.module';
   imports: [AssetModule],
   controllers: [DashboardController],
 })
-export class DashboardModule { }
+export class DashboardModule {}
