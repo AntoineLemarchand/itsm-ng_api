@@ -33,15 +33,26 @@ class AssetRepository {
     return await this.prisma.dashboard_AssetType.count();
   }
 
-  async countByType(type: string) {
-    const assetType = await this.getByName(type);
-    if (!assetType) {
-      throw new Error(`Asset type ${type} does not exist`);
+  async countFromSelection(selection: object): Promise<number> {
+    // selection -> { Computer: { modelId: { test: {} }, typeId: {} } }
+    const condition = {
+      assetType: {
+        name: {
+          in: Object.keys(selection),
+        }
+      }
+    }
+    for (const assetType in selection) {
+      for (const col in selection[assetType]) {
+        condition[col] = {
+          name: {
+            in: Object.keys(selection[assetType][col]),
+          }
+        };
+      }
     }
     return await this.prisma.dashboard_Asset.count({
-      where: {
-        assetType: assetType,
-      },
+      where: condition,
     });
   }
 }

@@ -23,9 +23,9 @@ export class AssetService {
     return await this.assetRepository.count();
   }
 
-  async countByType(type: string) {
+  async countByType(selection: object = {}) {
     try {
-      return await this.assetRepository.countByType(type);
+      return await this.assetRepository.countFromSelection(selection);
     } catch (error) {
       throw new Error(error);
     }

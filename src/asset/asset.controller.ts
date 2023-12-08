@@ -30,7 +30,7 @@ export class AssetController {
   @Get('count/:type')
   async countByType(@Param('type') type: string) {
     try {
-      return await this.assetService.countByType(type);
+      return await this.assetService.countByType({type});
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }

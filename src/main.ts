@@ -17,6 +17,7 @@ async function bootstrap() {
       '.swagger-ui .topbar-wrapper { content:url(/logo.png); height: 3rem }',
   });
 
+  app.enableCors();
   await app.listen(3000);
 }
 bootstrap();
