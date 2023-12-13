@@ -17,7 +17,6 @@ model Dashboard_Entity {
   parent          Dashboard_Entity?  @relation("ParentChild", fields: [parentId], references: [id])
   children        Dashboard_Entity[] @relation("ParentChild")
   Dashboard_Group Dashboard_Group?
-  Dashboard_Type  Dashboard_Type?
   Dashboard_Asset Dashboard_Asset?
 }
 
@@ -65,10 +64,6 @@ model Dashboard_AssetType {
 model Dashboard_Type {
   id   Int    @id @default(autoincrement())
   name String
-
-  entityId Int              @unique
-  entity   Dashboard_Entity @relation(fields: [entityId], references: [id])
-
   assets Dashboard_Asset[]
 }
 

@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, Inject, Query } from '@nestjs/common';
+import { Controller, Get, HttpException, Inject, Param, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { ApiOperation, ApiParam, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -36,7 +36,6 @@ export class DashboardController {
   async getCount(@Query() query: CountDto): Promise<number> {
     try {
       const result = await this.dashboardService.count(query);
-      console.log(result);
       return result;
     } catch (error) {
       console.log(error.message);
@@ -51,7 +50,6 @@ export class DashboardController {
   async getLine(@Query() query: GraphDto): Promise<any[]> {
     try {
       const result = await this.dashboardService.line(query);
-      console.log(result);
       return result;
     } catch (error) {
       console.log(error.message);
@@ -64,9 +62,8 @@ export class DashboardController {
   @ApiResponse({ status: 400, description: 'Could not fetch request' })
   @Get('bar')
   async getBar(@Query() query: GraphDto): Promise<any[]> {
-    try {
+    try { 
       const result = await this.dashboardService.bar(query);
-      console.log(result);
       return result;
     } catch (error) {
       console.log(error.message);
@@ -81,7 +78,20 @@ export class DashboardController {
   async getPie(@Query() query: GraphDto): Promise<any[]> {
     try {
       const result = await this.dashboardService.bar(query);
-      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, 400);
+    }
+  }
+
+  @ApiOperation({ summary: 'Get the comparable data for object' })
+  @ApiResponse({ status: 200, description: 'The comparable data' })
+  @ApiResponse({ status: 400, description: 'Could not fetch request' })
+  @Get('comparisons/:type')
+  async getComparisons(@Param('type') type: string): Promise<any[]> {
+    try {
+      const result = await this.dashboardService.getComparisons(type);
       return result;
     } catch (error) {
       console.log(error.message);

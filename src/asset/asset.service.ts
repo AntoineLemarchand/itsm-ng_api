@@ -41,18 +41,19 @@ export class AssetService {
     }
   }
 
-  async barByType(selection: object = {}, compare: string = 'name') {
+  async barByType(selection: object = {}, compare: string = 'name', isForeign: boolean = false) {
     try {
       const condition = this.selectionToCondition(selection);
       const includes = {}
-      includes[compare] = true;
-      console.log(includes);
+      console.log(isForeign);
+      if (isForeign)
+        includes[compare] = true;
       const result = await this.assetRepository.get(condition, includes);
 
-      const labels = new Set(result.map((asset) => asset.model.name));
+      const labels = new Set(result.map((asset) => asset[compare].name));
       const series = [];
       for (const label of labels) {
-        const count = result.filter((asset) => asset.model.name === label).length;
+        const count = result.filter((asset) => asset[compare].name === label).length;
         series.push(count);
       }
 

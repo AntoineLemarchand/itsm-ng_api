@@ -19,10 +19,15 @@ class AssetRepository {
   }
 
   async get(where: object = {}, includes: object = {}): Promise<any[]> {
-    return await this.prisma.dashboard_Asset.findMany({
+    const result = await this.prisma.dashboard_Asset.findMany({
       where: where,
       include: includes,
     });
+    return result;
+  }
+
+  async getForeignColumnToCompare() {
+    return this.prisma.dashboard_Asset;
   }
 }
 
