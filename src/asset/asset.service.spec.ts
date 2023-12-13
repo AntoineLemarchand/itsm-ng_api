@@ -27,13 +27,17 @@ describe('DashboardService', () => {
 
   it('should throw an error for unsupported statType', async () => {
     const query = { statType: 'Ticket', statSelection: '{}' };
-    await expect(service.count(query)).rejects.toThrow(`Type ${query.statType} is not supported`);
+    await expect(service.count(query)).rejects.toThrow(
+      `Type ${query.statType} is not supported`,
+    );
   });
 
   it('should call countByType for supported statType', async () => {
     const query = { statType: 'Other', statSelection: '{}' };
     const countByTypeSpy = jest.spyOn(service['assetService'], 'countByType');
     await service.count(query);
-    expect(countByTypeSpy).toHaveBeenCalledWith(JSON.parse(query.statSelection));
+    expect(countByTypeSpy).toHaveBeenCalledWith(
+      JSON.parse(query.statSelection),
+    );
   });
 });

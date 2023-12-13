@@ -24,4 +24,46 @@ export class DashboardService {
         );
     }
   }
+
+  async line(query: any) {
+    const { statType, statSelection } = query;
+    switch (statType) {
+      case 'Ticket':
+        throw new Error(`Type ${statType} is not supported`);
+      case 'Entity':
+        throw new Error(`Type ${statType} is not supported`);
+      case 'Profile':
+        throw new Error(`Type ${statType} is not supported`);
+      case 'Group':
+        throw new Error(`Type ${statType} is not supported`);
+      case 'User':
+        throw new Error(`Type ${statType} is not supported`);
+      default:
+        return await this.assetService.lineByType(
+          await JSON.parse(statSelection),
+          query.comparison,
+        );
+    }
+  }
+
+  async bar(query: any) {
+    const { statType, statSelection } = query;
+    switch (statType) {
+      case 'Ticket':
+        throw new Error(`Type ${statType} is not supported`);
+      case 'Entity':
+        throw new Error(`Type ${statType} is not supported`);
+      case 'Profile':
+        throw new Error(`Type ${statType} is not supported`);
+      case 'Group':
+        throw new Error(`Type ${statType} is not supported`);
+      case 'User':
+        throw new Error(`Type ${statType} is not supported`);
+      default:
+        return await this.assetService.barByType(
+          await JSON.parse(statSelection),
+          query.comparison,
+        );
+    }
+  }
 }

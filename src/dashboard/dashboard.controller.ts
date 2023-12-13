@@ -1,10 +1,24 @@
 import { Controller, Get, HttpException, Inject, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 class CountDto {
+  @ApiProperty({ enum: ['Asset', 'Ticket', 'Entity', 'Group', 'User'] })
   readonly statType: string;
+
+  @ApiProperty()
   readonly statSelection: object;
+}
+
+class GraphDto {
+  @ApiProperty({ enum: ['Asset', 'Ticket', 'Entity', 'Group', 'User'] })
+  readonly statType: string;
+
+  @ApiProperty()
+  readonly statSelection: object;
+
+  @ApiProperty()
+  readonly comparison: object;
 }
 
 @ApiTags('dashboard')
@@ -22,6 +36,51 @@ export class DashboardController {
   async getCount(@Query() query: CountDto): Promise<number> {
     try {
       const result = await this.dashboardService.count(query);
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, 400);
+    }
+  }
+
+  @ApiOperation({ summary: 'Get the parameters for a chartistjs LineGraph' })
+  @ApiResponse({ status: 200, description: 'The total number of assets' })
+  @ApiResponse({ status: 400, description: 'Could not fetch request' })
+  @Get('line')
+  async getLine(@Query() query: GraphDto): Promise<any[]> {
+    try {
+      const result = await this.dashboardService.line(query);
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, 400);
+    }
+  }
+
+  @ApiOperation({ summary: 'Get the parameters for a chartistjs BarGraph' })
+  @ApiResponse({ status: 200, description: 'The total number of assets' })
+  @ApiResponse({ status: 400, description: 'Could not fetch request' })
+  @Get('bar')
+  async getBar(@Query() query: GraphDto): Promise<any[]> {
+    try {
+      const result = await this.dashboardService.bar(query);
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, 400);
+    }
+  }
+
+  @ApiOperation({ summary: 'Get the parameters for a chartistjs PieGraph' })
+  @ApiResponse({ status: 200, description: 'The total number of assets' })
+  @ApiResponse({ status: 400, description: 'Could not fetch request' })
+  @Get('pie')
+  async getPie(@Query() query: GraphDto): Promise<any[]> {
+    try {
+      const result = await this.dashboardService.bar(query);
       console.log(result);
       return result;
     } catch (error) {

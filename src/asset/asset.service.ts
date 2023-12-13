@@ -7,27 +7,79 @@ export class AssetService {
     @Inject(AssetRepository) private assetRepository: AssetRepository,
   ) {}
 
-  async findAll() {
-    return await this.assetRepository.findAll();
-  }
-
-  async findById(id: number) {
-    return await this.assetRepository.findById(id);
-  }
-
-  async getByName(name: string) {
-    return await this.assetRepository.getByName(name);
-  }
-
   async count() {
     return await this.assetRepository.count();
   }
 
   async countByType(selection: object = {}) {
     try {
-      return await this.assetRepository.countFromSelection(selection);
+      const condition = this.selectionToCondition(selection);
+      return await this.assetRepository.count(condition);
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async lineByType(selection: object = {}, compare: string = 'name') {
+    try {
+      const condition = this.selectionToCondition(selection);
+      const includes = {}
+      includes[compare] = true;
+      console.log(includes);
+      const result = await this.assetRepository.get(condition, includes);
+
+      const labels = new Set(result.map((asset) => asset.model.name));
+      const series = [];
+      for (const label of labels) {
+        const count = result.filter((asset) => asset.model.name === label).length;
+        series.push(count);
+      }
+
+      return [Array.from(labels), series];
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async barByType(selection: object = {}, compare: string = 'name') {
+    try {
+      const condition = this.selectionToCondition(selection);
+      const includes = {}
+      includes[compare] = true;
+      console.log(includes);
+      const result = await this.assetRepository.get(condition, includes);
+
+      const labels = new Set(result.map((asset) => asset.model.name));
+      const series = [];
+      for (const label of labels) {
+        const count = result.filter((asset) => asset.model.name === label).length;
+        series.push(count);
+      }
+
+      return [Array.from(labels), series];
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  private selectionToCondition(selection: object = {}) {
+    const condition = {
+      assetType: {
+        name: {
+          in: Object.keys(selection),
+        },
+      },
+    };
+    for (const assetType in selection) {
+      for (const col in selection[assetType]) {
+        condition[col] = {
+          name: {
+            in: Object.keys(selection[assetType][col]),
+          },
+        };
+      }
+    }
+
+    return condition;
   }
 }
