@@ -25,7 +25,6 @@ export class AssetService {
       const condition = this.selectionToCondition(selection);
       const includes = {};
       includes[compare] = true;
-      console.log(includes);
       const result = await this.assetRepository.get(condition, includes);
 
       const labels = new Set(result.map((asset) => asset.model.name));
@@ -51,7 +50,6 @@ export class AssetService {
     try {
       const condition = this.selectionToCondition(selection);
       const includes = {};
-      console.log(isForeign);
       if (isForeign) includes[compare] = true;
       const result = await this.assetRepository.get(condition, includes);
 
