@@ -1,6 +1,18 @@
-import { Controller, Get, HttpException, Inject, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  Inject,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
-import { ApiOperation, ApiParam, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiProperty,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 class CountDto {
   @ApiProperty({ enum: ['Asset', 'Ticket', 'Entity', 'Group', 'User'] })
@@ -62,7 +74,7 @@ export class DashboardController {
   @ApiResponse({ status: 400, description: 'Could not fetch request' })
   @Get('bar')
   async getBar(@Query() query: GraphDto): Promise<any[]> {
-    try { 
+    try {
       const result = await this.dashboardService.bar(query);
       return result;
     } catch (error) {

@@ -13,9 +13,8 @@ class AssetRepository {
 
   async count(condition: object = {}): Promise<number> {
     return await this.prisma.dashboard_Asset.count({
-        where: condition,
-      },
-    );
+      where: condition,
+    });
   }
 
   async get(where: object = {}, includes: object = {}): Promise<any[]> {
