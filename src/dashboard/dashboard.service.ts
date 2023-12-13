@@ -61,16 +61,6 @@ export class DashboardService {
       case 'User':
         throw new Error(`Type ${statType} is not supported`);
       default:
-        console.log(
-          Object.values(
-            Prisma[
-              `Dashboard_${statType.charAt(0)}${statType.slice(
-                1,
-              )}ScalarFieldEnum`
-            ],
-          ),
-        );
-        console.log(query.comparison + 'Id');
         return await this.assetService.barByType(
           await JSON.parse(statSelection),
           query.comparison,
