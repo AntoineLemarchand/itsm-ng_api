@@ -11,13 +11,13 @@ datasource db {
 }
 
 model Dashboard_Entity {
-  id              Int                @id @default(autoincrement())
-  name            String
-  parentId        Int?               @unique
-  parent          Dashboard_Entity?  @relation("ParentChild", fields: [parentId], references: [id])
-  children        Dashboard_Entity[] @relation("ParentChild")
-  Dashboard_Group Dashboard_Group?
-  Dashboard_Asset Dashboard_Asset?
+  id       Int                @id @default(autoincrement())
+  name     String
+  parentId Int?               @unique
+  parent   Dashboard_Entity?  @relation("ParentChild", fields: [parentId], references: [id])
+  children Dashboard_Entity[] @relation("ParentChild")
+  group    Dashboard_Group?
+  assets   Dashboard_Asset[]
 }
 
 model Dashboard_Profile {
@@ -49,46 +49,52 @@ model Dashboard_User {
   profile   Dashboard_Profile? @relation(fields: [profileId], references: [id])
 }
 
-model Dashboard_Locations {
-  id    Int              @id @default(autoincrement())
+model Dashboard_Location {
+  id    Int               @id @default(autoincrement())
   name  String
-  asset Dashboard_Asset?
+  asset Dashboard_Asset[]
 }
 
 model Dashboard_AssetType {
   id     Int               @id @default(autoincrement())
   name   String            @unique
   assets Dashboard_Asset[]
+  models Dashboard_Model[]
+  types  Dashboard_Type[]
 }
 
 model Dashboard_Type {
-  id   Int    @id @default(autoincrement())
-  name String
-  assets Dashboard_Asset[]
+  id          Int                 @id @default(autoincrement())
+  name        String
+  assetTypeId Int
+  assetType   Dashboard_AssetType @relation(fields: [assetTypeId], references: [id])
+  assets      Dashboard_Asset[]
 }
 
 model Dashboard_Model {
-  id     Int               @id @default(autoincrement())
-  name   String
-  assets Dashboard_Asset[]
+  id          Int                 @id @default(autoincrement())
+  name        String
+  assetTypeId Int
+  assetType   Dashboard_AssetType @relation(fields: [assetTypeId], references: [id])
+  assets      Dashboard_Asset[]
 }
 
 model Dashboard_Asset {
   id   Int    @id @default(autoincrement())
   name String
 
-  entityId Int              @unique
+  entityId Int
   entity   Dashboard_Entity @relation(fields: [entityId], references: [id])
 
-  assetTypeId Int                 @unique
+  assetTypeId Int
   assetType   Dashboard_AssetType @relation(fields: [assetTypeId], references: [id])
 
-  locationId Int?                 @unique
-  location   Dashboard_Locations? @relation(fields: [locationId], references: [id])
+  locationId Int?
+  location   Dashboard_Location? @relation(fields: [locationId], references: [id])
 
-  modelId Int?             @unique
+  modelId Int?
   model   Dashboard_Model? @relation(fields: [modelId], references: [id])
 
-  typeId Int?            @unique
+  typeId Int?
   type   Dashboard_Type? @relation(fields: [typeId], references: [id])
 }

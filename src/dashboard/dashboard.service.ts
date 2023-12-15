@@ -75,16 +75,12 @@ export class DashboardService {
     }
   }
 
-  getComparisons(type: string): string[] {
+  getComparisons(type: string): any[] {
     const columns =
-      Prisma[`Dashboard_${type.charAt(0)}${type.slice(1)}ScalarFieldEnum`];
-    const comparableColumns = Object.values(columns).map((column: string) => {
-      if (column.slice(-2) === 'Id') {
-        return column.slice(0, -2);
-      } else {
-        return column;
-      }
+      Prisma[`Dashboard_${type.charAt(0)}${type.slice(1)}ScalarFieldEnum`]; 
+    const comparableColumns = Object.values(columns).filter((column: string) => {
+      return column.endsWith('Id');
     });
-    return comparableColumns;
+    return comparableColumns.map((column: string) => column.slice(0, -2))
   }
 }
