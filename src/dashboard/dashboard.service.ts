@@ -40,7 +40,7 @@ export class DashboardService {
       case 'User':
         throw new Error(`Type ${statType} is not supported`);
       default:
-        return await this.assetService.lineByType(
+        const result = await this.assetService.barByType(
           await JSON.parse(statSelection),
           query.comparison,
           Object.values(
@@ -51,6 +51,7 @@ export class DashboardService {
             ],
           ).includes(query.comparison + 'Id'),
         );
+        return [result[0], [result[1]]];
     }
   }
 
@@ -90,7 +91,7 @@ export class DashboardService {
         return column.endsWith('Id');
       },
     );
-    // if value can be null, add null to the list 
+    // if value can be null, add null to the list
     return comparableColumns.map((column: string) => column.slice(0, -2));
   }
 }

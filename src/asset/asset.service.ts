@@ -21,34 +21,6 @@ export class AssetService {
     }
   }
 
-  async lineByType(
-    selection: object = {},
-    compare: string = 'name',
-    isForeign: boolean = false,
-  ) {
-    try {
-      const condition = this.selectionToCondition(selection);
-      const includes = {};
-      if (isForeign) includes[compare] = true;
-      const result = await this.assetRepository.get(condition, includes);
-
-      const labels = new Set(result.map((asset) => asset[compare].name));
-      const series = [];
-      for (const label of labels) {
-        const count = result.filter(
-          isForeign
-            ? (asset) => asset[compare].name === label
-            : (asset) => asset[compare] === label,
-        ).length;
-        series.push(count);
-      }
-
-      return [Array.from(labels), [series]];
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
   async barByType(
     selection: object = {},
     compare: string = 'name',
@@ -60,12 +32,15 @@ export class AssetService {
       if (isForeign) includes[compare] = true;
       const result = await this.assetRepository.get(condition, includes);
 
-      const labels = new Set(result.map((asset) => asset[compare].name));
+      const labels = new Set(
+        result.map((asset) => (asset[compare] ? asset[compare].name : 'null')),
+      );
       const series = [];
       for (const label of labels) {
         const count = result.filter(
           isForeign
-            ? (asset) => asset[compare].name === label
+            ? (asset) =>
+                (asset[compare] ? asset[compare].name : 'null') === label
             : (asset) => asset[compare] === label,
         ).length;
         series.push(count);
@@ -87,7 +62,7 @@ export class AssetService {
     };
     for (const assetType in selection) {
       for (const col in selection[assetType]) {
-        let keys = Object.keys(selection[assetType][col]);
+        const keys = Object.keys(selection[assetType][col]);
         if (keys.length === 0) continue;
 
         let hasNull = false;
@@ -103,16 +78,10 @@ export class AssetService {
             },
           };
         } else {
-          condition[col].name.in = [
-            ...condition[col].name.in,
-            ...keys,
-          ];
+          condition[col].name.in = [...condition[col].name.in, ...keys];
         }
         if (hasNull) {
-          condition['OR'] = [
-            {[col + "Id"]: null},
-            {[col]: condition[col]}
-          ];
+          condition['OR'] = [{ [col + 'Id']: null }, { [col]: condition[col] }];
           delete condition[col];
         }
       }

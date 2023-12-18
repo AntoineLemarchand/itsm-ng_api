@@ -13,7 +13,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
 
 class CountDto {
   @ApiProperty()
@@ -77,7 +76,7 @@ export class DashboardController {
   async getBar(@Query() query: any): Promise<any[]> {
     try {
       const result = await this.dashboardService.bar(query);
-      return result
+      return result;
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, 400);
