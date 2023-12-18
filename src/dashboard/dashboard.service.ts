@@ -84,10 +84,12 @@ export class DashboardService {
 
   getComparisons(type: string): any[] {
     const columns =
-      Prisma[`Dashboard_${type.charAt(0)}${type.slice(1)}ScalarFieldEnum`]; 
-    const comparableColumns = Object.values(columns).filter((column: string) => {
-      return column.endsWith('Id');
-    });
-    return comparableColumns.map((column: string) => column.slice(0, -2))
+      Prisma[`Dashboard_${type.charAt(0)}${type.slice(1)}ScalarFieldEnum`];
+    const comparableColumns = Object.values(columns).filter(
+      (column: string) => {
+        return column.endsWith('Id');
+      },
+    );
+    return comparableColumns.map((column: string) => column.slice(0, -2));
   }
 }

@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AssetRepository } from './asset.repository';
-import { empty } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class AssetService {
@@ -36,9 +35,9 @@ export class AssetService {
       const series = [];
       for (const label of labels) {
         const count = result.filter(
-          isForeign ?
-          (asset) => asset[compare].name === label :
-          (asset) => asset[compare] === label,
+          isForeign
+            ? (asset) => asset[compare].name === label
+            : (asset) => asset[compare] === label,
         ).length;
         series.push(count);
       }
@@ -64,9 +63,9 @@ export class AssetService {
       const series = [];
       for (const label of labels) {
         const count = result.filter(
-          isForeign ?
-          (asset) => asset[compare].name === label :
-          (asset) => asset[compare] === label,
+          isForeign
+            ? (asset) => asset[compare].name === label
+            : (asset) => asset[compare] === label,
         ).length;
         series.push(count);
       }
