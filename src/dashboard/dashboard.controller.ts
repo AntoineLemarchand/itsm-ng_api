@@ -56,7 +56,7 @@ export class DashboardController {
   }
 
   @ApiOperation({ summary: 'Get the parameters for a chartistjs LineGraph' })
-  @ApiResponse({ status: 200, description: 'The total number of assets' })
+  @ApiResponse({ status: 200, description: 'The fetched data' })
   @ApiResponse({ status: 400, description: 'Could not fetch request' })
   @Get('line')
   async getLine(@Query() query: GraphDto): Promise<any[]> {
@@ -70,7 +70,7 @@ export class DashboardController {
   }
 
   @ApiOperation({ summary: 'Get the parameters for a chartistjs BarGraph' })
-  @ApiResponse({ status: 200, description: 'The total number of assets' })
+  @ApiResponse({ status: 200, description: 'The fetched data' })
   @ApiResponse({ status: 400, description: 'Could not fetch request' })
   @Get('bar')
   async getBar(@Query() query: GraphDto): Promise<any[]> {
@@ -84,7 +84,7 @@ export class DashboardController {
   }
 
   @ApiOperation({ summary: 'Get the parameters for a chartistjs PieGraph' })
-  @ApiResponse({ status: 200, description: 'The total number of assets' })
+  @ApiResponse({ status: 200, description: 'The fetched data' })
   @ApiResponse({ status: 400, description: 'Could not fetch request' })
   @Get('pie')
   async getPie(@Query() query: GraphDto): Promise<any[]> {

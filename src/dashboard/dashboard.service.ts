@@ -43,6 +43,13 @@ export class DashboardService {
         return await this.assetService.lineByType(
           await JSON.parse(statSelection),
           query.comparison,
+          Object.values(
+            Prisma[
+              `Dashboard_${statType.charAt(0)}${statType.slice(
+                1,
+              )}ScalarFieldEnum`
+            ],
+          ).includes(query.comparison + 'Id'),
         );
     }
   }
