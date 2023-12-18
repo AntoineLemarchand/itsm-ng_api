@@ -64,19 +64,23 @@ model Dashboard_AssetType {
 }
 
 model Dashboard_Type {
-  id          Int                 @id @default(autoincrement())
+  id          Int
   name        String
   assetTypeId Int
   assetType   Dashboard_AssetType @relation(fields: [assetTypeId], references: [id])
   assets      Dashboard_Asset[]
+
+  @@id([id, assetTypeId])
 }
 
 model Dashboard_Model {
-  id          Int                 @id @default(autoincrement())
+  id          Int
   name        String
   assetTypeId Int
   assetType   Dashboard_AssetType @relation(fields: [assetTypeId], references: [id])
   assets      Dashboard_Asset[]
+
+  @@id([id, assetTypeId])
 }
 
 model Dashboard_Asset {
@@ -93,8 +97,8 @@ model Dashboard_Asset {
   location   Dashboard_Location? @relation(fields: [locationId], references: [id])
 
   modelId Int?
-  model   Dashboard_Model? @relation(fields: [modelId], references: [id])
+  model   Dashboard_Model? @relation(fields: [modelId, assetTypeId], references: [id, assetTypeId])
 
   typeId Int?
-  type   Dashboard_Type? @relation(fields: [typeId], references: [id])
+  type   Dashboard_Type? @relation(fields: [typeId, assetTypeId], references: [id, assetTypeId])
 }

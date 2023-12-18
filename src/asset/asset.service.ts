@@ -14,7 +14,8 @@ export class AssetService {
   async countByType(selection: object = {}) {
     try {
       const condition = this.selectionToCondition(selection);
-      return await this.assetRepository.count(condition);
+      const result = await this.assetRepository.count(condition);
+      return result;
     } catch (error) {
       throw new Error(error);
     }
@@ -86,18 +87,33 @@ export class AssetService {
     };
     for (const assetType in selection) {
       for (const col in selection[assetType]) {
-        if (Object.keys(selection[assetType][col]).length === 0) continue;
+        let keys = Object.keys(selection[assetType][col]);
+        if (keys.length === 0) continue;
+
+        let hasNull = false;
+        if (keys.includes('null')) {
+          keys.splice(keys.indexOf('null'), 1);
+          hasNull = true;
+        }
+
         if (!condition[col]) {
           condition[col] = {
             name: {
-              in: Object.keys(selection[assetType][col]),
+              in: keys,
             },
           };
         } else {
           condition[col].name.in = [
             ...condition[col].name.in,
-            ...Object.keys(selection[assetType][col]),
+            ...keys,
           ];
+        }
+        if (hasNull) {
+          condition['OR'] = [
+            {[col + "Id"]: null},
+            {[col]: condition[col]}
+          ];
+          delete condition[col];
         }
       }
     }

@@ -13,9 +13,10 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Prisma } from '@prisma/client';
 
 class CountDto {
-  @ApiProperty({ enum: ['Asset', 'Ticket', 'Entity', 'Group', 'User'] })
+  @ApiProperty()
   readonly statType: string;
 
   @ApiProperty()
@@ -23,7 +24,7 @@ class CountDto {
 }
 
 class GraphDto {
-  @ApiProperty({ enum: ['Asset', 'Ticket', 'Entity', 'Group', 'User'] })
+  @ApiProperty()
   readonly statType: string;
 
   @ApiProperty()
@@ -73,10 +74,10 @@ export class DashboardController {
   @ApiResponse({ status: 200, description: 'The fetched data' })
   @ApiResponse({ status: 400, description: 'Could not fetch request' })
   @Get('bar')
-  async getBar(@Query() query: GraphDto): Promise<any[]> {
+  async getBar(@Query() query: any): Promise<any[]> {
     try {
       const result = await this.dashboardService.bar(query);
-      return result;
+      return result
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, 400);
@@ -103,7 +104,7 @@ export class DashboardController {
   @Get('comparisons/:type')
   async getComparisons(@Param('type') type: string): Promise<any[]> {
     try {
-      const result = await this.dashboardService.getComparisons(type);
+      const result = this.dashboardService.getComparisons(type);
       return result;
     } catch (error) {
       console.log(error.message);

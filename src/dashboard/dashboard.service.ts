@@ -90,6 +90,7 @@ export class DashboardService {
         return column.endsWith('Id');
       },
     );
+    // if value can be null, add null to the list 
     return comparableColumns.map((column: string) => column.slice(0, -2));
   }
 }
