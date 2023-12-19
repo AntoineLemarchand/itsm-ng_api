@@ -14,7 +14,6 @@ export class AssetService {
   async countByType(selection: object = {}) {
     try {
       const condition = this.selectionToCondition(selection);
-      console.log(JSON.stringify(condition))
       const result = await this.assetRepository.count(condition);
       return result;
     } catch (error) {
@@ -54,46 +53,33 @@ export class AssetService {
   }
 
   private selectionToCondition(selection: object = {}) {
-    const condition = {
-      assetType: {
-        name: {
-          in: Object.keys(selection),
-        },
-      },
-    };
+    const condition = { OR: [] };
     for (const assetType in selection) {
+      const assetCondition = {
+        AND: [
+          { assetType: { name: assetType } }
+        ] 
+      } as { AND: object[] };
+
       for (const col in selection[assetType]) {
-        const keys = Object.keys(selection[assetType][col]);
-        if (keys.length === 0) continue;
-
-        let hasNull = false;
-        if (keys.includes('null')) {
-          keys.splice(keys.indexOf('null'), 1);
-          hasNull = true;
-        }
-
-        if (!condition[col]) {
-          condition[col] = {
-            name: {
-              in: keys,
-            },
-          };
+        const subCondition = {};
+        const values = Object.keys(selection[assetType][col]);
+        const canBeNull = values.includes('null');
+        
+        if (!values.length) continue;
+        if (canBeNull) {
+          values.splice(values.indexOf('null'), 1);
+          subCondition['OR'] = [
+            { [col + 'Id']: null },
+            { [col]: { name: { in: values } } }
+          ];
         } else {
-          condition[col].name.in = [...condition[col].name.in, ...keys];
+          subCondition[col] = { name: { in: values } };
         }
-        if (!hasNull)
-          return condition;
-        if (!condition['OR']) {
-          condition['OR'] = [{ [col + 'Id']: null }, { [col]: condition[col] }];
-          delete condition[col];
-        } else {
-          condition['OR'].push({ [col + 'Id']: null });
-          condition['OR'].push({ [col]: condition[col] });
-          delete condition[col];
-        }
+        assetCondition.AND.push(subCondition);
       }
+      condition.OR.push(assetCondition);
     }
-
     return condition;
   }
 }
