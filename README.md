@@ -4,7 +4,7 @@
 
 # ITSM-ng: Backend API
 
-The ITSM-ng Backend API, Its aim is to provide an way to easily recover data to create customizable dashboard charts
+The ITSM-ng Backend API aims to provide an easy way to retrieve data for creating customizable dashboard charts.
 
 ## Dependencies
 
@@ -16,12 +16,13 @@ The ITSM-ng Backend API, Its aim is to provide an way to easily recover data to 
 1. Clone the repository: `git clone https://github.com/itsmng/itsm-ng_api.git`
 2. Change into the project directory: `cd itsm-ng_api`
 3. Install dependencies: `yarn`
-4. Modify the `.env-sample` file to your liking and rename it as `.env`
+4. Modify the `.env-sample` file according to your environment settings and rename it to `.env`.
 5. Start the application: `yarn start`
 
 ## Usage
 
-If your .env file is setup on the same database as your itsm-ng frontend, everything should work out of the box
+If your .env file is configured to use the same database as your ITSM-ng frontend, the application should work seamlessly.
+An API documentation should be accessible on the route `/api`.
 
 ## Contributing
 
