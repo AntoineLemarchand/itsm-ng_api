@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 
 type Group = Prisma.Dashboard_GroupGetPayload<Record<string, unknown>>;
-type CreateGroupData = Omit<Prisma.Dashboard_GroupCreateInput, 'id'>;
+type CreateGroupData = Prisma.Dashboard_GroupCreateInput;
 
 @Injectable()
 export class GroupRepository {
