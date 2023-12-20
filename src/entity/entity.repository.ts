@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 import { Prisma } from '@prisma/client';
 type Entity = Prisma.Dashboard_EntityGetPayload<Record<string, unknown>>;
-type CreateEntityData = Omit<Prisma.Dashboard_EntityCreateInput, 'id'>;
+type CreateEntityData = Prisma.Dashboard_EntityCreateInput;
 
 @Injectable()
 export class EntityRepository {

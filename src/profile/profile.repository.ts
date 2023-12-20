@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 
 type Profile = Prisma.Dashboard_ProfileGetPayload<Record<string, unknown>>;
-type CreateProfileData = Omit<Prisma.Dashboard_ProfileCreateInput, 'id'>;
+type CreateProfileData = Prisma.Dashboard_ProfileCreateInput;
 
 @Injectable()
 export class ProfileRepository {
