@@ -16,7 +16,7 @@ The ITSM-ng Backend API, Its aim is to provide an way to easily recover data to 
 1. Clone the repository: `git clone https://github.com/itsmng/itsm-ng_api.git`
 2. Change into the project directory: `cd itsm-ng_api`
 3. Install dependencies: `yarn`
-4. Modify the env file to your liking
+4. Modify the `.env-sample` file to your liking and rename it as `.env`
 5. Start the application: `yarn start`
 
 ## Usage
