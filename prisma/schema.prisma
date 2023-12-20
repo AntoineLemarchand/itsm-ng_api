@@ -102,3 +102,10 @@ model Dashboard_Asset {
   typeId Int?
   type   Dashboard_Type? @relation(fields: [typeId, assetTypeId], references: [id, assetTypeId])
 }
+
+model glpi_configs {
+  id Int @id
+  context String
+  name String
+  value String
+}

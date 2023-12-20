@@ -5,6 +5,7 @@ import {
   Inject,
   Param,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import {
