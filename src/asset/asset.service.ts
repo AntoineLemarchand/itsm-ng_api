@@ -56,22 +56,20 @@ export class AssetService {
     const condition = { OR: [] };
     for (const assetType in selection) {
       const assetCondition = {
-        AND: [
-          { assetType: { name: assetType } }
-        ] 
+        AND: [{ assetType: { name: assetType } }],
       } as { AND: object[] };
 
       for (const col in selection[assetType]) {
         const subCondition = {};
         const values = Object.keys(selection[assetType][col]);
         const canBeNull = values.includes('null');
-        
+
         if (!values.length) continue;
         if (canBeNull) {
           values.splice(values.indexOf('null'), 1);
           subCondition['OR'] = [
             { [col + 'Id']: null },
-            { [col]: { name: { in: values } } }
+            { [col]: { name: { in: values } } },
           ];
         } else {
           subCondition[col] = { name: { in: values } };

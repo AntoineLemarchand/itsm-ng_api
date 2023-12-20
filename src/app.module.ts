@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -26,6 +26,10 @@ import { APP_GUARD } from '@nestjs/core';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, { provide: APP_GUARD, useClass: ApiKeyGuard }],
+  providers: [
+    AppService,
+    PrismaService,
+    { provide: APP_GUARD, useClass: ApiKeyGuard },
+  ],
 })
-export class AppModule { }
+export class AppModule {}
