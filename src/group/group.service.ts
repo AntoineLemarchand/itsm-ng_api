@@ -1,7 +1,7 @@
 /**
  * ---------------------------------------------------------------------
  * ITSM-NG
- * Copyright (C) 2022 ITSM-NG and contributors.
+ * Copyright (C) 2024 ITSM-NG and contributors.
  *
  * https://www.itsm-ng.org
  *

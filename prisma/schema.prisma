@@ -15,38 +15,43 @@ model Dashboard_Entity {
   name     String
   parentId Int?
 
-  parent   Dashboard_Entity?  @relation("ParentChild", fields: [parentId], references: [id])
-  children Dashboard_Entity[] @relation("ParentChild")
-  groups   Dashboard_Group[]
-  assets   Dashboard_Asset[]
+  parent                  Dashboard_Entity?         @relation("ParentChild", fields: [parentId], references: [id])
+  children                Dashboard_Entity[]        @relation("ParentChild")
+  groups                  Dashboard_Group[]
+  assets                  Dashboard_Asset[]
+  Dashboard_ProfileEntity Dashboard_ProfileEntity[]
 }
 
 model Dashboard_Profile {
-  id   Int    @id
-  name String
-
-  users Dashboard_User[]
+  id                      Int                       @id
+  name                    String
+  Dashboard_ProfileEntity Dashboard_ProfileEntity[]
 }
 
+model Dashboard_ProfileEntity {
+  id        Int @id
+  profileId Int
+  entityId  Int
+
+  profile Dashboard_Profile @relation(fields: [profileId], references: [id])
+  entity  Dashboard_Entity  @relation(fields: [entityId], references: [id])
+  users   Dashboard_User[]
+
+  @@unique([profileId, entityId])
+}
+
+// many to many relationship
 model Dashboard_Group {
-  id       Int    @id
+  id       Int              @id
   name     String
   entityId Int
-
-  entity Dashboard_Entity @relation(fields: [entityId], references: [id])
-  users  Dashboard_User[]
+  entity   Dashboard_Entity @relation(fields: [entityId], references: [id])
 }
 
 model Dashboard_User {
-  id Int @id
-
-  name String
-
-  groupId Int?
-  group   Dashboard_Group? @relation(fields: [groupId], references: [id])
-
-  profileId Int?
-  profile   Dashboard_Profile? @relation(fields: [profileId], references: [id])
+  id            Int                       @id
+  name          String
+  habilitations Dashboard_ProfileEntity[]
 }
 
 model Dashboard_Location {
