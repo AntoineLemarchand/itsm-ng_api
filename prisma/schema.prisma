@@ -46,19 +46,22 @@ model Dashboard_Group {
   name     String
   entityId Int
   entity   Dashboard_Entity @relation(fields: [entityId], references: [id])
+
+  users Dashboard_User[]
 }
 
 model Dashboard_User {
   id            Int                       @id
   name          String
   habilitations Dashboard_ProfileEntity[]
+  groups        Dashboard_Group[]
 }
 
 model Dashboard_Location {
   id   Int    @id @default(autoincrement())
   name String
 
-  asset Dashboard_Asset[]
+  assets Dashboard_Asset[]
 }
 
 model Dashboard_AssetType {
