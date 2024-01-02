@@ -42,7 +42,7 @@ export class DashboardService {
     const { statType, statSelection } = query;
     const service = this.getServiceFromStatType(statType);
     return await service.count(
-      this.selectionToCondition(await JSON.parse(statSelection))
+      this.selectionToCondition(await JSON.parse(statSelection)),
     );
   }
 
@@ -54,9 +54,7 @@ export class DashboardService {
       query.comparison,
       Object.values(
         Prisma[
-          `Dashboard_${statType.charAt(0)}${statType.slice(
-            1,
-          )}ScalarFieldEnum`
+          `Dashboard_${statType.charAt(0)}${statType.slice(1)}ScalarFieldEnum`
         ],
       ).includes(query.comparison + 'Id'),
     );
@@ -71,9 +69,7 @@ export class DashboardService {
       query.comparison,
       Object.values(
         Prisma[
-          `Dashboard_${statType.charAt(0)}${statType.slice(
-            1,
-          )}ScalarFieldEnum`
+          `Dashboard_${statType.charAt(0)}${statType.slice(1)}ScalarFieldEnum`
         ],
       ).includes(query.comparison + 'Id'),
     );

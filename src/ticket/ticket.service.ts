@@ -27,7 +27,9 @@ export class TicketService {
       const result = await this.ticketRepository.get(condition, includes);
 
       const labels = new Set(
-        result.map((ticket) => (ticket[compare] ? ticket[compare].name : 'null')),
+        result.map((ticket) =>
+          ticket[compare] ? ticket[compare].name : 'null',
+        ),
       );
       const series = [];
       for (const label of labels) {
