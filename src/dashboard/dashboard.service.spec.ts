@@ -37,7 +37,8 @@ describe('DashboardService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        DashboardService, TicketService,
+        DashboardService,
+        TicketService,
         {
           provide: AssetService,
           useValue: {

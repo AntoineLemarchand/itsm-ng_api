@@ -32,7 +32,11 @@ describe('TicketService', () => {
   describe('count', () => {
     it('should handle errors gracefully', async () => {
       mockTicketRepository.count.mockRejectedValue(new Error('Test error'));
-      await expect(service.count({ /* invalid condition */ })).rejects.toThrow('Test error');
+      await expect(
+        service.count({
+          /* invalid condition */
+        }),
+      ).rejects.toThrow('Test error');
     });
 
     it('should return total count when called with empty conditions', async () => {
@@ -40,7 +44,6 @@ describe('TicketService', () => {
       const result = await service.count({});
       expect(result).toBe(100);
     });
-
 
     it('should return correct count for specific conditions', async () => {
       mockTicketRepository.count.mockResolvedValue(20); // Assuming 20 matches the condition
@@ -66,12 +69,18 @@ describe('TicketService', () => {
   describe('bar', () => {
     it('should handle errors gracefully', async () => {
       mockTicketRepository.get.mockRejectedValue(new Error('Test error'));
-      await expect(service.bar({ /* invalid condition */ })).rejects.toThrow('Test error');
+      await expect(
+        service.bar({
+          /* invalid condition */
+        }),
+      ).rejects.toThrow('Test error');
     });
 
     it('should return empty labels and series for empty result set', async () => {
       mockTicketRepository.get.mockResolvedValue([]);
-      const [labels, series] = await service.bar({ /* conditions */ });
+      const [labels, series] = await service.bar({
+        /* conditions */
+      });
       expect(labels).toEqual([]);
       expect(series).toEqual([]);
     });
