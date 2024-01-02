@@ -35,13 +35,8 @@ export class AssetService {
     @Inject(AssetRepository) private assetRepository: AssetRepository,
   ) {}
 
-  async count() {
-    return await this.assetRepository.count();
-  }
-
-  async countByType(selection: object = {}) {
+  async count(condition: object) {
     try {
-      const condition = this.selectionToCondition(selection);
       const result = await this.assetRepository.count(condition);
       return result;
     } catch (error) {
@@ -49,13 +44,12 @@ export class AssetService {
     }
   }
 
-  async barByType(
-    selection: object = {},
+  async bar(
+    condition: object = {},
     compare: string = 'name',
     isForeign: boolean = false,
   ) {
     try {
-      const condition = this.selectionToCondition(selection);
       const includes = {};
       if (isForeign) includes[compare] = true;
       const result = await this.assetRepository.get(condition, includes);
@@ -78,34 +72,5 @@ export class AssetService {
     } catch (error) {
       throw new Error(error);
     }
-  }
-
-  private selectionToCondition(selection: object = {}) {
-    const condition = { OR: [] };
-    for (const assetType in selection) {
-      const assetCondition = {
-        AND: [{ assetType: { name: assetType } }],
-      } as { AND: object[] };
-
-      for (const col in selection[assetType]) {
-        const subCondition = {};
-        const values = Object.keys(selection[assetType][col]);
-        const canBeNull = values.includes('null');
-
-        if (!values.length) continue;
-        if (canBeNull) {
-          values.splice(values.indexOf('null'), 1);
-          subCondition['OR'] = [
-            { [col + 'Id']: null },
-            { [col]: { name: { in: values } } },
-          ];
-        } else {
-          subCondition[col] = { name: { in: values } };
-        }
-        assetCondition.AND.push(subCondition);
-      }
-      condition.OR.push(assetCondition);
-    }
-    return condition;
   }
 }

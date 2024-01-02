@@ -19,6 +19,7 @@ model Dashboard_Entity {
   children                Dashboard_Entity[]        @relation("ParentChild")
   groups                  Dashboard_Group[]
   assets                  Dashboard_Asset[]
+  tickets                 Dashboard_Ticket[]
   Dashboard_ProfileEntity Dashboard_ProfileEntity[]
 }
 
@@ -55,6 +56,7 @@ model Dashboard_User {
   name          String
   habilitations Dashboard_ProfileEntity[]
   groups        Dashboard_Group[]
+  tickets       Dashboard_Ticket[]
 }
 
 model Dashboard_Location {
@@ -111,6 +113,77 @@ model Dashboard_Asset {
   type      Dashboard_Type?     @relation(fields: [typeId, assetTypeId], references: [id, assetTypeId])
 
   @@id([id, assetTypeId])
+}
+
+model Dashboard_TicketStatus {
+  id   Int    @id
+  name String
+
+  tickets Dashboard_Ticket[]
+}
+
+model Dashboard_TicketType {
+  id   Int    @id
+  name String
+
+  tickets Dashboard_Ticket[]
+}
+
+model Dashboard_Urgency {
+  id   Int    @id
+  name String
+
+  tickets Dashboard_Ticket[]
+}
+
+model Dashboard_Impact {
+  id   Int    @id
+  name String
+
+  tickets Dashboard_Ticket[]
+}
+
+model Dashboard_Priority {
+  id   Int    @id
+  name String
+
+  tickets Dashboard_Ticket[]
+}
+
+model Dashboard_ITILCategory {
+  id   Int    @id
+  name String
+
+  tickets Dashboard_Ticket[]
+}
+
+model Dashboard_Ticket {
+  id        Int       @id
+  name      String
+  entityId  Int
+  date      DateTime
+  closeDate DateTime?
+  solveDate DateTime?
+
+  statusId Int
+  typeId   Int
+
+  recipientId Int
+
+  urgencyId  Int
+  impactId   Int
+  priorityId Int
+
+  ITILCategoryId Int
+
+  status       Dashboard_TicketStatus @relation(fields: [statusId], references: [id])
+  type         Dashboard_TicketType   @relation(fields: [typeId], references: [id])
+  entity       Dashboard_Entity       @relation(fields: [entityId], references: [id])
+  recipient    Dashboard_User         @relation(fields: [recipientId], references: [id])
+  urgency      Dashboard_Urgency      @relation(fields: [urgencyId], references: [id])
+  impact       Dashboard_Impact       @relation(fields: [impactId], references: [id])
+  priority     Dashboard_Priority     @relation(fields: [priorityId], references: [id])
+  ITILCategory Dashboard_ITILCategory @relation(fields: [ITILCategoryId], references: [id])
 }
 
 model glpi_configs {

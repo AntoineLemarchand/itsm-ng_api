@@ -26,15 +26,30 @@
  * ---------------------------------------------------------------------
  */
 
-import { Module } from '@nestjs/common';
-import { DashboardController } from './dashboard.controller';
-import { AssetModule } from '../asset/asset.module';
-import { DashboardService } from './dashboard.service';
-import { TicketModule } from 'src/ticket/ticket.module';
+import { Injectable, Inject } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
-@Module({
-  imports: [AssetModule, TicketModule],
-  controllers: [DashboardController],
-  providers: [DashboardService],
-})
-export class DashboardModule {}
+@Injectable()
+class TicketRepository {
+  constructor(@Inject(PrismaService) private prisma: PrismaService) {}
+
+  async count(condition: object = {}): Promise<number> {
+    return await this.prisma.dashboard_Ticket.count({
+      where: condition,
+    });
+  }
+
+  async get(where: object = {}, includes: object = {}): Promise<any[]> {
+    const result = await this.prisma.dashboard_Ticket.findMany({
+      where: where,
+      include: includes,
+    });
+    return result;
+  }
+
+  async getForeignColumnToCompare() {
+    return this.prisma.dashboard_Ticket;
+  }
+}
+
+export { TicketRepository };

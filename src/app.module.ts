@@ -40,6 +40,7 @@ import { ProfileModule } from './profile/profile.module';
 import { AuthModule } from './auth/auth.module';
 import { ApiKeyGuard } from './auth/apiKey.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { TicketModule } from './ticket/ticket.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { APP_GUARD } from '@nestjs/core';
     GroupModule,
     ProfileModule,
     AuthModule,
+    TicketModule,
   ],
   controllers: [AppController],
   providers: [
