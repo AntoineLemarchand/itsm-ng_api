@@ -4,7 +4,7 @@
  * Copyright (C) 2024 ITSM-NG and contributors.
  *
  * https://www.itsm-ng.org
-*
+ *
  * ---------------------------------------------------------------------
  *
  * LICENSE
@@ -20,11 +20,11 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
+ *
+ * You should have received a copy of the GNU General Public License
  * along with ITSM-NG. If not, see <http://www.gnu.org/licenses/>.
  * ---------------------------------------------------------------------
-*/
+ */
 
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject } from '@nestjs/common';

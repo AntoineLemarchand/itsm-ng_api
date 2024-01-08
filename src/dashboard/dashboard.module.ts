@@ -30,9 +30,10 @@ import { Module } from '@nestjs/common';
 import { DashboardController } from './dashboard.controller';
 import { AssetModule } from '../asset/asset.module';
 import { DashboardService } from './dashboard.service';
+import { TicketModule } from 'src/ticket/ticket.module';
 
 @Module({
-  imports: [AssetModule],
+  imports: [AssetModule, TicketModule],
   controllers: [DashboardController],
   providers: [DashboardService],
 })

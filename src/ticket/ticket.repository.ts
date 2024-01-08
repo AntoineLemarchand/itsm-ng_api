@@ -26,38 +26,30 @@
  * ---------------------------------------------------------------------
  */
 
-import { Test, TestingModule } from '@nestjs/testing';
-import { DashboardService } from './dashboard.service';
-import { AssetService } from '../asset/asset.service';
-import { TicketService } from 'src/ticket/ticket.service';
+import { Injectable, Inject } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
-describe('DashboardService', () => {
-  let service: DashboardService;
+@Injectable()
+class TicketRepository {
+  constructor(@Inject(PrismaService) private prisma: PrismaService) {}
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        DashboardService,
-        TicketService,
-        {
-          provide: AssetService,
-          useValue: {
-            count: jest.fn(),
-          },
-        },
-        {
-          provide: TicketService,
-          useValue: {
-            count: jest.fn(),
-          },
-        },
-      ],
-    }).compile();
+  async count(condition: object = {}): Promise<number> {
+    return await this.prisma.dashboard_Ticket.count({
+      where: condition,
+    });
+  }
 
-    service = module.get<DashboardService>(DashboardService);
-  });
+  async get(where: object = {}, includes: object = {}): Promise<any[]> {
+    const result = await this.prisma.dashboard_Ticket.findMany({
+      where: where,
+      include: includes,
+    });
+    return result;
+  }
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-});
+  async getForeignColumnToCompare() {
+    return this.prisma.dashboard_Ticket;
+  }
+}
+
+export { TicketRepository };
