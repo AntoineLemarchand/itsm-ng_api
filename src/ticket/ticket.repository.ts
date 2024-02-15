@@ -39,10 +39,9 @@ class TicketRepository {
     });
   }
 
-  async get(where: object = {}, includes: object = {}): Promise<any[]> {
+  async get(where: object = {}, include: object = {}): Promise<any[]> {
     const result = await this.prisma.dashboard_Ticket.findMany({
-      where: where,
-      include: includes,
+      where, include,
     });
     return result;
   }
