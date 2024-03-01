@@ -17,7 +17,8 @@ The ITSM-ng Backend API aims to provide an easy way to retrieve data for creatin
 2. Change into the project directory: `cd itsm-ng_api`
 3. Install dependencies: `yarn`
 4. Modify the `.env-sample` file according to your environment settings and rename it to `.env`.
-5. Start the application: `yarn start`
+5. Generate database configuration: `npx prisma generate`
+6. Start the application: `yarn start`
 
 ## Usage
 
